@@ -20,9 +20,13 @@ label var point_est_error "Mean of absolute value error on percentage point esti
 **This metric considers that each race varies in difficulty & ///
 **adjusts observed error from mean error for the specific race
 
+*First count number of polls per race
+bysort race_id: egen Num_Polls=count(abs_margin_error)
+
 foreach x in point_est_error margin_error_favor_trump abs_margin_error  error  rightcall{
 bysort race_id: egen M`x'=mean(`x')
 bysort race_id: gen ADJ`x'=`x'-M`x'
+replace ADJ`x'=. if Num_Polls<=1
 }
 
 *Merge grade from other 538 data
@@ -31,6 +35,7 @@ drop _merge
 
 *Collapse by pollster
 collapse (first) grade score (count) N=abs_margin_error (mean) ADJpoint_est_error ADJmargin_error_favor_trump ADJabs_margin_error ADJrightcall ADJerror  point_est_error margin_error_favor_trump margin_poll margin_actual abs_margin_error bias Mpoint_est_error Mmargin_error_favor_trump Mabs_margin_error rightcall, by(pollster)
+label var score "Encoded letter grade 1-15 scale"
 
 *Remove polls with less than 10 runs
 drop if N<10
@@ -92,9 +97,13 @@ label var point_est_error "Mean of absolute value error on percentage point esti
 **This metric considers that each race varies in difficulty & ///
 **adjusts observed error from mean error for the specific race
 
+*First count number of polls per race
+bysort race_id: egen Num_Polls=count(abs_margin_error)
+
 foreach x in point_est_error margin_error_favor_trump abs_margin_error  error  rightcall{
 bysort race_id: egen M`x'=mean(`x')
 bysort race_id: gen ADJ`x'=`x'-M`x'
+replace ADJ`x'=. if Num_Polls<=1
 }
 
 *Merge grade from other 538 data//change drive location
@@ -103,6 +112,7 @@ drop _merge
 
 *Collapse by pollster
 collapse (first) grade score (count) N=abs_margin_error (mean) ADJpoint_est_error ADJmargin_error_favor_trump ADJabs_margin_error ADJrightcall ADJerror  point_est_error margin_error_favor_trump margin_poll margin_actual abs_margin_error bias Mpoint_est_error Mmargin_error_favor_trump Mabs_margin_error rightcall, by(pollster)
+label var score "Encoded letter grade 1-15 scale"
 
 **Average margin of error per poll in favor Trump (-3.4), meaning average poll had 3.4 ppt Clinton bias
 sum margin_error_favor_trump [aw=N]
