@@ -1,2 +1,2 @@
 # 538_pollster_criticism
-This code pulls data from 538's raw polling data and pollster grades, calculates actual errors across all elections, and for 2016 presidential race, and shows that 538's grades are weakly correlated with success across various measures.  https://github.com/fivethirtyeight/data/tree/master/pollster-ratings
+This code analyzes 538's raw polling data and pollster grades, calculates errors across all elections, adjusted for election-specific effects, and for the 2016 presidential race, and shows that 538's grades are weakly correlated with success across the two most important measures of error: point-estimate error and candidate margin error.  https://github.com/fivethirtyeight/data/tree/master/pollster-ratings
